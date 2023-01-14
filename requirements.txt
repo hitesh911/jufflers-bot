@@ -1,0 +1,9 @@
+aiohttp
+pytube
+wikipedia
+aiohttp-jinja2
+gunicorn
+
+ 
+                 
+
