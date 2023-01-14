@@ -12,6 +12,7 @@ import wikipedia
 import requests
 # local imports 
 import regularExpressions
+import credentials
 
 
 
@@ -95,7 +96,7 @@ def getYtLinks(msg,response):
         for link in urls:
             if "youtu.be" in link or "youtube.com" in link:
                 yt = YouTube(link)
-                response["replies"].append({"message": f"Videos links found in message \nTitle : {yt.title}\nDownload to gallery: {credentials.botlink}?urlyt={link}"})
+                response["replies"].append({"message": f"Videos links found in message \nTitle : {yt.title}\nDownload to gallery: {credentials.whatsAppBotUrl}/downloadyt?urlyt={link}"})
             else:
                 continue
         return True
