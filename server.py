@@ -16,9 +16,26 @@ import credentials
 
 
 
-
+# def sendChunk(stream,chunk,remaining_chunks):
+    # headers={
+    #     "Content-Type": mime_type,
     
-
+    # }
+    # return web.Response(body = f, headers = headers)
+    # print(stream,chunk,remaining_chunks)
+# async def download_yt_video(request):
+#     try:
+#         parameters = await request.post()
+#         # getting url from parameters 
+#         video_url = parameters["url"]
+#         # getting itag from parameters 
+#         mime_type_or_itag = parameters["itag"].split("$" ,1)
+#         mime_type = mime_type_or_itag[0]
+#         itag = int(mime_type_or_itag[1])
+#         yt = YouTube(video_url,on_progress_callback=sendChunk)
+#     except Exception as e:
+#         print("Error is ",e)
+   
 
 async def download_yt_video(request):
     if len(os.listdir("./downloads")) > 10:
@@ -55,7 +72,7 @@ async def download_yt_video(request):
                 pass
     
     # making stream download through client brouwser
-    # data = request.post()
+
     f = open(f"./downloads/{name}" , "rb")
 
     headers={
@@ -76,7 +93,7 @@ async def downloadyt(request):
     # making a empty array to store available itags 
     itag_resolution_list = {}
     # print(streams_list)
-    for stream in yt.streams.filter( progressive=True).all():
+    for stream in yt.streams.filter( progressive=True):
         itag_resolution_list[stream.resolution] = f"{stream.mime_type}${stream.itag}"
     for stream in yt.streams.filter(only_audio=True):
         itag_resolution_list[stream.resolution] = f"{stream.mime_type}${stream.itag}"
@@ -95,8 +112,8 @@ def getYtLinks(msg,response):
     if len(urls) != 0:
         for link in urls:
             if "youtu.be" in link or "youtube.com" in link:
-                yt = YouTube(link)
-                response["replies"].append({"message": f"Videos links found in message \nTitle : {yt.title}\nDownload to gallery: {credentials.whatsAppBotUrl}/downloadyt?urlyt={link}"})
+                yt =  YouTube(link)
+                response["replies"].append({"message": f"Videos links found in message \nTitle : {yt.title} \nDownload to gallery: {credentials.whatsAppBotUrl}/downloadyt?urlyt={link}"})
             else:
                 continue
         return True
@@ -104,13 +121,13 @@ def getYtLinks(msg,response):
         return False
 
 def stickerBan(msg,abuser_name,response):
-    if(bool(regularExpressions.sticker_regex.match(msg))):
+    if(bool(regularExpressions.sticker_regex.match(msg.lower()))):
         response["replies"].append({"message":f"Stickers are not allowed.\nDear {abuser_name} you will get removed by admin if you continue sending more stickers"})
         return True
     else:
         return False
 def searchInWiki(msg,searcher_name,response):
-    if("wiki" in msg.split(" ")[0]):
+    if("wiki" in msg.lower().split(" ")[0]):
         try:
             responce_from_bot = wikipedia.summary(msg)
             response["replies"].append({"message": f" Hey {searcher_name} here is your question summary: \n{responce_from_bot}"})
@@ -120,7 +137,7 @@ def searchInWiki(msg,searcher_name,response):
     else:
         return False
 def help(msg,response):
-    if(msg=="help"):
+    if(msg.lower()=="help"):
         response['replies'].append({"message":f"1. Send any YouTube video link to get direct download link.\n\n2. Send any topic heading (History,Science,Any acronym,Invention,culture,Politics etc.) to get brief summary:\n\t Message must in the format: \n\t\t\t\t\twiki <your topic> \n\n\n Warning: <,> don't use these signs "})
         return True
     else:
@@ -137,7 +154,7 @@ async def chatBot(request):
     query_set = json_string['query']
     # initlizing requred variables from queryset
     sender = query_set["sender"]
-    message = query_set["message"].lower()
+    message = query_set["message"]
     isGroup = query_set["isGroup"]
     groupParticipant = query_set["groupParticipant"]
     # initilizing response dict
