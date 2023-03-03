@@ -1,1 +1,1 @@
-whatsAppBotUrl = "https://web-production-2988.up.railway.app"
+whatsAppBotUrl = "https://juffler-bot.zerotwo.in"
