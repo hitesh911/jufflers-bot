@@ -32,6 +32,9 @@ WhatsApp YT Downloader API is a versatile tool designed to facilitate the manage
 2. Install dependencies using `pip install -r requirements.txt`.
 3. Get inside of project dir `cd jufflers-bot`.
 4. Run the application using `python server.py`.
+### Screen shots are:
+
+![Screenshot 1](screenshot1.png)
 
 ### Additional Information
 - Utilizes pytube Python library for downloading YouTube streams.
